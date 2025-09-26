@@ -7,22 +7,31 @@ Grid::Grid(const StartingGrid& starting_grid)
   /// initialize cells from starting grid
   /// empty cells are initialized with all candidates [1..9] at this point
   uint row = 0;
-  for(const auto &line: starting_grid)
-  {
+  for(const auto &line: starting_grid){
     uint col = 0;
-    for(const auto &elem: line)
-    {
+    for(const auto &elem: line){
       cells[9*row + col].init(row, col, cells, elem);
+      }
       col++;
     }
     row++;
-  }
 
-  /// TODO erase candidates according to starting grid
-  /// all non-empty cells should delete their value from their neighboors' candidates
+
+    /// TODO erase candidates according to starting grid
+    /// all non-empty cells should delete their value from their neighboors' candidates
+
+    for(auto &cell: cells){
+        if (cell.digit()){  // non-empty array
+            for (auto &neighboor: cell.neighboors()){
+                neighboor->eraseCandidate(cell.digit());
+            }
+        }
+    }
 
 
 }
+
+
 
 void Grid::solve()
 {
@@ -63,10 +72,10 @@ bool bestNextCell(const Cell &c1, const Cell &c2)
 /// main backtracking function
 bool Grid::solveNextCell()
 {
-
   // TODO check if the grid is already full
+
   if(std::all_of(cells.begin(), cells.end(), Cell::isAssigned))
-    return true;
+     return true;
 
   // identify next cell to go, it is just the best under whatever bestNextCell considers
   auto &next_cell{*std::min_element(cells.begin(), cells.end(), bestNextCell)};
@@ -79,8 +88,19 @@ bool Grid::solveNextCell()
   // you may place all printing code inside if(display) blocks
   for(auto guess: next_cell.candidates())
   {
-    //print(&next_cell);  // to display the picked guess
-  //print(&next_cell, true);  // to display this guess was reset
+      next_cell.set(guess);
+
+      if(solveNextCell()){
+          return true;
+      }
+      next_cell.cancel();
+
+      for(auto &neighboors: next_cell.neighboors() ){
+          neighboors->restore(guess);
+      }
+
+    print(&next_cell);  // to display the picked guess
+    print(&next_cell, true);  // to display this guess was reset
   }
   return false;
 }

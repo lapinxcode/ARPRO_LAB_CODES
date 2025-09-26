@@ -87,7 +87,6 @@ void Cell::set(uint guess){
 }
 
 void Cell::cancel(){
-
     auto guess = digit_;
     digit_ = 0;
     for(int i=0;i < neighboors_.size(); i++){

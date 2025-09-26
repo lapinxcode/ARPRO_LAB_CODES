@@ -20,7 +20,7 @@ inline bool useDisplay(int argc, char** argv, bool display)
 }
 
 
-// starting grid depending on whether we have YAML
+// starting gristarting_gridd depending on whether we have YAML
 
 using StartingGrid = std::array<std::array<uint,9>,9>;
 
