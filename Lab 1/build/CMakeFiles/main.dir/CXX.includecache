@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/user/rcoelhopae2025/ARPRO/Lab/src/main.cpp
+iostream
+-
+cstdlib
+-
+ctime
+-
+
